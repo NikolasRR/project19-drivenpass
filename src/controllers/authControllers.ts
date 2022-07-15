@@ -1,11 +1,20 @@
 import { Request, Response } from "express";
 
-import { authService, NewUserData } from "../services/authServices.js";
+import { authService, UserData } from "../services/authServices.js";
 
 export async function signUp(req: Request, res: Response) {
-    const newUser: NewUserData = req.body;
+    const newUser: UserData = req.body;
 
     await authService.createNewUser(newUser);
 
     res.sendStatus(201);
+}
+
+export async function signIn(req: Request, res: Response) {
+    const user: UserData = req.body;
+
+    const token = await authService.logUserIn(user);
+    res.header({token: token});
+
+    res.sendStatus(200);
 }

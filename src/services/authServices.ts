@@ -1,19 +1,34 @@
 import { User } from "@prisma/client";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import { authRepository } from "../repositories/authRepository.js";
 
-export type NewUserData = User;
+export type UserData = User;
 
-async function createNewUser(newUserData: NewUserData) {
+async function createNewUser(newUserData: UserData) {
     const emailAlreadyRegistered = await authRepository.getByEmail(newUserData.email);
-    if (emailAlreadyRegistered) throw { type: "conflict" }
+    if (emailAlreadyRegistered) throw { type: "conflict" };
 
     newUserData.password = bcrypt.hashSync(newUserData.password, 10);
 
     await authRepository.create(newUserData);
 }
 
+async function logUserIn(userData: UserData) {
+    const user = await authRepository.getByEmail(userData.email);
+    if (!user) throw { type: "not found" };
+
+    const passwordIsWrong = !bcrypt.compareSync(userData.password, user.password);
+    if (passwordIsWrong) throw { type: "unauthorized" };
+
+    const twelveHours = 60*60*12
+    const config = { expiresIn: twelveHours }
+    const token = jwt.sign(userData, process.env.JWT_SECRET, config);
+    return token;
+}
+
 export const authService = {
-    createNewUser
+    createNewUser,
+    logUserIn
 };
