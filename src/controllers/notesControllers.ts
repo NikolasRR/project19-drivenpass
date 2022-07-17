@@ -36,7 +36,7 @@ export async function deleteThisNote(req: Request, res: Response) {
     const id: number = res.locals.id;
     const user: TokenUser = res.locals.user;
 
-    // await notesRepository.deleteNote(id, user.id);
+    await notesServices.deleteNote(id, user.id);
 
     res.sendStatus(200);
 }

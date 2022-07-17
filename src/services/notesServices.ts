@@ -28,7 +28,11 @@ async function getSingleNote(id: number, userId: number) {
 }
 
 async function deleteNote(id: number, userId: number) {
-    
+    const note = await notesRepository.getById(id);
+
+    await notesUtils.verifyExistenceAndOwner(note, userId);
+
+    await notesRepository.deleteById(id);
 }
 
 const notesServices = {

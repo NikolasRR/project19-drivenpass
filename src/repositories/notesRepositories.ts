@@ -18,11 +18,16 @@ async function getById(id: number) {
     return await prisma.secureNote.findFirst({ where: { id } });
 }
 
+async function deleteById(id: number) {
+    await prisma.secureNote.delete({ where: { id } });
+}
+
 const notesRepository = {
     create,
     getByUserIdAndTitle,
     getAllByUser,
-    getById
+    getById,
+    deleteById
 };
 
 export default notesRepository;

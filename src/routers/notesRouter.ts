@@ -23,6 +23,10 @@ notesRouter.get('/notes/:id',
     controllers.getThisNote
 );
 
-notesRouter.delete('/notes/:id');
+notesRouter.delete('/notes/:id',
+    tokenValidator,
+    middleware.verifyId,
+    controllers.deleteThisNote
+);
 
 export default notesRouter;
