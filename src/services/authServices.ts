@@ -21,10 +21,12 @@ async function logUserIn(userData: UserData) {
 
     const passwordIsWrong = !bcrypt.compareSync(userData.password, user.password);
     if (passwordIsWrong) throw { type: "unauthorized" };
+    
+    delete user.password;
 
     const twelveHours = 60*60*12
     const config = { expiresIn: twelveHours }
-    const token = jwt.sign(userData, process.env.JWT_SECRET, config);
+    const token = jwt.sign(user, process.env.JWT_SECRET, config);
     return token;
 }
 
