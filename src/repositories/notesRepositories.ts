@@ -6,13 +6,23 @@ async function create(note: NewNote) {
     await prisma.secureNote.create({ data: note });
 }
 
-async function getByIdAndTitle(id: number, title: string) {
-    return await prisma.secureNote.findFirst({ where: { id, title } });
+async function getByUserIdAndTitle(userId: number, title: string) {
+    return await prisma.secureNote.findFirst({ where: { userId, title } });
+}
+
+async function getAllByUser(userId: number) {
+    return await prisma.secureNote.findMany({ where: { userId } });
+}
+
+async function getById(id: number) {
+    return await prisma.secureNote.findFirst({ where: { id } });
 }
 
 const notesRepository = {
     create,
-    getByIdAndTitle
+    getByUserIdAndTitle,
+    getAllByUser,
+    getById
 };
 
 export default notesRepository;

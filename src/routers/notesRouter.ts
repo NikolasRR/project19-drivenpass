@@ -11,8 +11,18 @@ notesRouter.post('/notes/create',
     middleware.verifyNote, 
     controllers.createNote
 );
-notesRouter.get('/notes');
-notesRouter.get('/notes/:id');
+
+notesRouter.get('/notes', 
+    tokenValidator,
+    controllers.getAllNotes
+);
+
+notesRouter.get('/notes/:id',
+    tokenValidator,
+    middleware.verifyId,
+    controllers.getThisNote
+);
+
 notesRouter.delete('/notes/:id');
 
 export default notesRouter;

@@ -1,7 +1,7 @@
 import { prisma } from "../database/db.js";
 import { NewCredential } from "../services/credentialsServices.js"
 
-async function getByIdAndTitle(userId: number, title: string) {
+async function getByUserIdAndTitle(userId: number, title: string) {
     return await prisma.credential.findFirst({ where: { title, userId } });
 }
 
@@ -22,7 +22,7 @@ async function deleteById(id: number) {
 }
 
 const credentialsRepository = {
-    getByIdAndTitle,
+    getByUserIdAndTitle,
     insert,
     getAllByUser,
     getById,

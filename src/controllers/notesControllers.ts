@@ -18,18 +18,18 @@ export async function createNote(req: Request, res: Response) {
 export async function getAllNotes(req: Request, res: Response) {
     const userId: number  = res.locals.user.id;
 
-    // const note = await notesRepository.getUsersNote(userId);
+    const notes = await notesServices.getUsersNotes(userId);
 
-    // res.send(note);
+    res.send(notes);
 }
 
 export async function getThisNote(req: Request, res: Response) {
     const id: number = res.locals.id;
     const user: TokenUser = res.locals.user;
 
-    // const credential = await notesRepository.getSingleNote(id, user.id);
+    const note = await notesServices.getSingleNote(id, user.id);
 
-    // res.send(credential);
+    res.send(note);
 }
 
 export async function deleteThisNote(req: Request, res: Response) {

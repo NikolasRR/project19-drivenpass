@@ -7,7 +7,7 @@ import credentialUtils from "../utils/credentialsUtils.js";
 export type NewCredential = Credential;
 
 async function saveNewCredential(newCredential: NewCredential) {
-    const alreadyExists = await credentialsRepository.getByIdAndTitle(newCredential.id, newCredential.title);
+    const alreadyExists = await credentialsRepository.getByUserIdAndTitle(newCredential.userId, newCredential.title);
 
     if (alreadyExists) throw { type: "conflict" };
 
