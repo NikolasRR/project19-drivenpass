@@ -23,4 +23,10 @@ credentialsRouter.get('/credentials/:id',
     controllers.getThisCredential
 );
 
+credentialsRouter.delete('/credentials/:id', 
+    tokenValidator,
+    middlewares.verifyId,
+    controllers.deleteThisCredential
+);
+
 export default credentialsRouter;

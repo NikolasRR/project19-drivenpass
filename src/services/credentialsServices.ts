@@ -2,6 +2,7 @@ import { Credential } from "@prisma/client";
 import cryptr from "../encryption/encryption.js";
 
 import credentialsRepository from "../repositories/credentialsRepository.js";
+import credentialUtils from "../utils/credentialsUtils.js";
 
 export type NewCredential = Credential;
 
@@ -26,18 +27,26 @@ async function getUsersCredentials(userId: number) {
 async function getSingleCredential(id: number, userId: number) {
     const credential = await credentialsRepository.getById(id);
 
-    if (!credential) throw { type: "not found" };
-    if (credential.userId !== userId) throw { type: "unauthorized" };
+    await credentialUtils.verifyExistenceAndOwner(credential, userId);
 
     credential.password = cryptr.decrypt(credential.password);
 
     return credential;
 }
 
+async function deleteCredential(id: number, userId: number) {
+    const credential = await credentialsRepository.getById(id);
+
+    await credentialUtils.verifyExistenceAndOwner(credential, userId);
+
+    await credentialsRepository.deleteById(id);
+}
+
 const credentialsServices = {
     saveNewCredential,
     getUsersCredentials,
-    getSingleCredential
+    getSingleCredential,
+    deleteCredential
 }
 
 export default credentialsServices;

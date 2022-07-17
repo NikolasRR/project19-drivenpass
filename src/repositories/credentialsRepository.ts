@@ -10,18 +10,23 @@ async function insert(data: NewCredential) {
 }
 
 async function getAllByUser(userId: number) {
-    return await prisma.credential.findMany({ where: { userId } })
+    return await prisma.credential.findMany({ where: { userId } });
 }
 
 async function getById(id: number) {
-    return await prisma.credential.findFirst({ where: { id } })
+    return await prisma.credential.findFirst({ where: { id } });
+}
+
+async function deleteById(id: number) {
+    await prisma.credential.delete({ where: { id } });
 }
 
 const credentialsRepository = {
     getByIdAndTitle,
     insert,
     getAllByUser,
-    getById
+    getById,
+    deleteById
 }
 
 export default credentialsRepository;
