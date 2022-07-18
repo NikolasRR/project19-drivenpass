@@ -4,7 +4,7 @@ import { creationSchema } from "../schemas/cardsSchemas.js";
 
 export async function verifyCardData(req: Request, res: Response, next: NextFunction) {
     const validation = creationSchema.validate(req.body, { abortEarly: false });
-    if (validation.error) throw { type: "request format", details: validation.error };
+    if (validation.error) throw { type: "request format", message: validation.error };
 
     next();
 }
@@ -12,7 +12,7 @@ export async function verifyCardData(req: Request, res: Response, next: NextFunc
 export async function verifyId(req: Request, res: Response, next: NextFunction) {
     const id = Number(req.params.id);
 
-    if (!id) throw { type: "request format" }
+    if (!id) throw { type: "request format", details: "id" }
 
     res.locals.id = id;
 

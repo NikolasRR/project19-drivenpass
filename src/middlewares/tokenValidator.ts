@@ -10,11 +10,11 @@ export type TokenUser = {
 
 export default async function tokenValidator(req: Request, res: Response, next: NextFunction) {
     const rawToken: string = req.headers.authorization;
-    if (!rawToken) throw { type: "request format" };
+    if (!rawToken) throw { type: "request format", details: "token"};
     const token = rawToken.replace("Bearer", "").trim();
     
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded: TokenUser) => {
-        if (err) throw { type: "request format", details: err };
+        if (err) throw { type: "request format", details: "jwt" };
         res.locals.user = decoded;
     });
     
